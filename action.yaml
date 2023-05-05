@@ -1,0 +1,34 @@
+name: Check deprecated k8s APIs
+auther: Eddy Bobbin
+description: "Check your helm chart for resources which uses deprecated k8s APIs"#
+inputs:
+  PLUTO_VERSION:
+    descripton: version of pluto
+    default: 5.16.1
+    required: true
+  K8S_VERSION:
+    description: version of k8s
+    default: 1.24.8
+    required: true
+  HELM_CHART_DIRECTORY:
+    description: the directory of your helm chart
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Download Pluto
+      shell: bash
+      run: |
+        wget https://github.com/FairwindsOps/pluto/releases/download/v${{ PLUTO_VERSION }}/pluto_${{ PLUTO_VERSION }}_linux_amd64.tar.gz -O - | tar -xz
+        mv pluto /usr/local/bin/pluto
+        chmod +x /usr/local/bin/pluto
+    - name: Download helm
+      shell: bash
+      run: | 
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        chmod +x get_helm.sh
+        ./get_helm.sh
+    - name: verify helm chart
+      shell: bash
+      run: |
+        helm template ${{ HELM_CHART_DIRECTORY }} | pluto detect -t k8s=${{ K8S_VERSION }} --ignore-deprecations --ignore-removals -
