@@ -8,7 +8,7 @@ inputs:
     required: true
   K8S_VERSION:
     description: version of k8s
-    default: 1.24.8
+    default: v1.24.8
     required: true
   HELM_CHART_DIRECTORY:
     description: the directory of your helm chart
