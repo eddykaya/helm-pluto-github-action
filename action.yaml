@@ -19,7 +19,7 @@ runs:
     - name: Download Pluto
       shell: bash
       run: |
-        wget https://github.com/FairwindsOps/pluto/releases/download/v${{ PLUTO_VERSION }}/pluto_${{ PLUTO_VERSION }}_linux_amd64.tar.gz -O - | tar -xz
+        wget https://github.com/FairwindsOps/pluto/releases/download/v${{ inputs.PLUTO_VERSION }}/pluto_${{ inputs.PLUTO_VERSION }}_linux_amd64.tar.gz -O - | tar -xz
         mv pluto /usr/local/bin/pluto
         chmod +x /usr/local/bin/pluto
     - name: Download helm
@@ -31,4 +31,4 @@ runs:
     - name: verify helm chart
       shell: bash
       run: |
-        helm template ${{ HELM_CHART_DIRECTORY }} | pluto detect -t k8s=${{ K8S_VERSION }} --ignore-deprecations --ignore-removals -
+        helm template ${{ inputs.HELM_CHART_DIRECTORY }} | pluto detect -t k8s=${{ inputs.K8S_VERSION }} --ignore-deprecations --ignore-removals -
