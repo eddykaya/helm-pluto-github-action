@@ -31,4 +31,5 @@ runs:
     - name: verify helm chart
       shell: bash
       run: |
-        helm template ${{ inputs.HELM_CHART_DIRECTORY }} | pluto detect -t k8s=${{ inputs.K8S_VERSION }} --ignore-deprecations --ignore-removals -
+        helm template ${{ inputs.HELM_CHART_DIRECTORY }} | pluto detect -omarkdown -t k8s=${{ inputs.K8S_VERSION }} --ignore-deprecations --ignore-removals -
+      
